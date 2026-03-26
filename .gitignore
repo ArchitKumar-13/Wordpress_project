@@ -1,0 +1,9 @@
+# ── Never commit these ─────────────────────
+.env
+
+# ── Docker runtime files ────────────────────
+*.log
+
+# ── OS files ────────────────────────────────
+.DS_Store
+Thumbs.db
