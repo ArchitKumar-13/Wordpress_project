@@ -39,17 +39,24 @@ cd Wordpress_project
 ```
 mv .env.example .env
 ```
-### ***Step*** 7 : Start docker containers in detached mode.
+
+### ***Step*** 7 : Make a directory nginx and move the default.conf file in that directory.
+```
+mkdir nginx
+mv default.conf nginx/
+```
+
+### ***Step*** 8 : Start docker containers in detached mode.
 ```
 docker-compose up -d
 ```
 
-### ***Step*** 8 : Check the containers are up and running.
+### ***Step*** 9 : Check the containers are up and running.
 ```
 docker ps
 ```
 
-### ***Step*** 9 : Access Application.
+### ***Step*** 10 : Access Application.
 ### Go to your browser, and access this <ins>**Wordpress Application**</ins> on port <ins>**80**</ins> via the ubuntu instance public IPv4 or IPv6.
 
 #### ***Allow the inbound port 80 in the security group.***
