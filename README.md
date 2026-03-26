@@ -27,7 +27,7 @@ git --version | cut -d ' ' -f3
 
 ### ***Step*** 4 : Clone this repository.
 ```
-git clone https://github.com/
+git clone https://github.com/ArchitKumar-13/Wordpress_project
 ```
 
 ### ***Step*** 5 : Change the directory.
