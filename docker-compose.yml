@@ -1,0 +1,91 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────
+#  All sensitive values come from the .env file — never
+#  hardcode passwords or usernames directly in this file.
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ───────────────────────────────────────────
+  # MySQL Database
+  # ───────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: wordpress_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql          # persistent DB storage
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost",
+             "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wp_network
+
+  # ───────────────────────────────────────────
+  # WordPress  (official image — no Dockerfile needed)
+  # Includes: PHP, Apache, WordPress core
+  # ───────────────────────────────────────────
+  wordpress:
+    image: wordpress:latest              # pull directly from Docker Hub
+    container_name: wordpress_app
+    restart: unless-stopped
+    expose:
+      - "80"                             # internal only — Nginx talks to this
+    environment:
+      WORDPRESS_DB_HOST:     db:3306     # "db" = service name above
+      WORDPRESS_DB_NAME:     ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER:     ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+
+      # Optional — set these to skip the WP install wizard entirely
+      WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX:-wp_}
+      WORDPRESS_DEBUG:        ${WP_DEBUG:-0}
+    volumes:
+      - wp_data:/var/www/html            # persists themes, plugins, uploads
+    depends_on:
+      db:
+        condition: service_healthy       # wait until MySQL is truly ready
+    networks:
+      - wp_network
+
+  # ───────────────────────────────────────────
+  # Nginx — Reverse Proxy
+  # Sits in front of WordPress, handles domain routing
+  # ───────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: wordpress_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"                          # expose to the internet
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - wordpress
+    networks:
+      - wp_network
+
+# ─────────────────────────────────────────────────────────────
+# Named Volumes  (data survives container restarts/rebuilds)
+# ─────────────────────────────────────────────────────────────
+volumes:
+  mysql_data:
+    driver: local
+  wp_data:
+    driver: local
+
+# ─────────────────────────────────────────────────────────────
+# Network  (containers talk to each other by service name)
+# ─────────────────────────────────────────────────────────────
+networks:
+  wp_network:
+    driver: bridge
