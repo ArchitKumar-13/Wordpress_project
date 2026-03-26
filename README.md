@@ -32,7 +32,7 @@ git clone https://github.com/ArchitKumar-13/Wordpress_project
 
 ### ***Step*** 5 : Change the directory.
 ```
-cd wordpress
+cd Wordpress_project
 ```
 
 ### ***Step*** 6 : Create environment variable file.
