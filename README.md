@@ -57,6 +57,6 @@ docker ps
 ```
 
 ### ***Step*** 10 : Access Application.
-### Go to your browser, and access this <ins>**Wordpress Application**</ins> on port <ins>**80**</ins> via the ubuntu instance public IPv4 or IPv6.
+### Go to your browser, and access this <ins>**Wordpress Application**</ins> on port <ins>**80**</ins> via the ubuntu instance public IPv4 or IPv6. We can access the application with the custom domain by mapping it with the Public IP of the Ubuntu Instance.
 
 #### ***Allow the inbound port 80 in the security group.***
