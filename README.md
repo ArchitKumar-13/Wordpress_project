@@ -1,7 +1,7 @@
 # Wordpress_project
 ### Prerequisites: 
 - Ubuntu Instance
-  - Instance Type: ***t2.medium***
+  - Instance Type: ***t3.micro***
 - Install <ins>**Docker**</ins>, <ins>**Docker-Compose**</ins> & <ins>**Git**</ins>
 
 ### ***Step*** 1 : Install Docker
