@@ -60,3 +60,40 @@ docker ps
 ### Go to your browser, and access this <ins>**Wordpress Application**</ins> on port <ins>**80**</ins> via the ubuntu instance public IPv4 or IPv6. We can access the application with the custom domain by mapping it with the Public IP of the Ubuntu Instance.
 
 #### ***Allow the inbound port 80 in the security group.***
+
+### For Local Setup (In Windows PC):
+- Install <ins>**Docker engine**</ins>, <ins>**WSL (Windows Subsystem for Linux)**</ins>, <ins>**Git Bash**</ins>
+- Make sure to turn on the <ins>**Docker engine**</ins> and then go to the Linux terminal installed.
+
+### Clone this repository.
+```
+git clone https://github.com/ArchitKumar-13/Wordpress_project
+```
+
+### Change the directory.
+```
+cd Wordpress_project
+```
+
+### Create environment variable file.
+```
+mv .env.example .env
+```
+
+### Make a directory nginx and move the default.conf file in that directory.
+```
+mkdir nginx
+mv default.conf nginx/
+```
+
+### Start docker containers in detached mode.
+```
+docker-compose up -d
+```
+
+### Check the containers are up and running.
+```
+docker ps
+```
+
+### Access Application on the localhost with the <ins>**IP (127.0.0.1) at port 80**</ins>, and if you want to access the application via a domain name, then just bind the IP with the domain by adding it in the <ins>**/etc/hosts**</ins> file.
